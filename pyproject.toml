@@ -1,0 +1,48 @@
+# ---------------------------------------------------------------------------
+# eagle_three — a runnable, from-scratch EAGLE-3 reconstruction in PyTorch.
+#
+# Companion code for the engineering article:
+#   _implementations/eagle-3-speculative-decoding-llm-inference-acceleration.md
+#
+# Managed with uv:  `uv sync --group dev`  then  `uv run eagle3-all`
+# ---------------------------------------------------------------------------
+[project]
+name = "eagle3-from-scratch"
+version = "0.1.0"
+description = "EAGLE-3 speculative decoding reconstructed in PyTorch: draft model, training-time test, lossless verification, and the article's correctness experiments."
+readme = "README.md"
+authors = [{ name = "Trisham Patil" }]
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    # Article tested with PyTorch 2.14.1 (CPU) and Transformers 5.18.0.
+    # Lower bounds are the oldest versions with the APIs we rely on
+    # (DynamicCache.crop, output_hidden_states, F.scaled_dot_product_attention).
+    "torch>=2.4",
+    "transformers>=4.46",
+]
+
+# One console command per experiment in the article (see README.md).
+[project.scripts]
+eagle3-param-count  = "eagle3.experiments.param_count:main"
+eagle3-shapes       = "eagle3.experiments.shapes:main"
+eagle3-check-ttt    = "eagle3.experiments.check_ttt_attention:main"
+eagle3-check-verify = "eagle3.experiments.check_verify:main"
+eagle3-train        = "eagle3.experiments.train_draft:main"
+eagle3-eval         = "eagle3.experiments.eval_lossless:main"
+eagle3-ablation     = "eagle3.experiments.ablation_ttt_steps:main"
+eagle3-all          = "eagle3.experiments.run_all:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/eagle3"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
