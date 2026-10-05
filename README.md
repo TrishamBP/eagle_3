@@ -1,4 +1,4 @@
-# eagle_three — EAGLE-3 Speculative Decoding from Scratch in PyTorch
+# EAGLE-3 Speculative Decoding from Scratch in PyTorch
 
 A small, runnable reconstruction of **EAGLE-3** ([arXiv:2503.01840](https://arxiv.org/abs/2503.01840)).
 It covers the draft model, multi-layer feature fusion, training-time test, lossless verification and a
